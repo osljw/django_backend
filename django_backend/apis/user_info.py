@@ -2,7 +2,7 @@ from django.http import HttpResponse
 
 import json
 
-def user(request):
+def user_info(request):
     d = {}
     d['data'] = [
         {

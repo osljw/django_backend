@@ -16,11 +16,22 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from . import api
-from .apis.user import user
+from .apis.user_info import user_info
+from user_auth.views import (
+    Register,
+    Login,
+)
+from user_menu.views import UserMenu
 
 urlpatterns = [
-    path('login', api.login, name='login'),
-    path('menus', api.menus, name='menus'),
-    path('user', user),
+    #path('login', api.login, name='login'),
+    
+    path('user', user_info),
     path('admin/', admin.site.urls),
+
+    path('api/register', Register.as_view()),
+    path('api/login', Login.as_view()),
+
+    #path('api/menus', api.menus, name='menus'),
+    path('api/menus', UserMenu.as_view()),
 ]
