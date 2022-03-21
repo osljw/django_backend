@@ -20,6 +20,7 @@ from .apis.user_info import user_info
 from user_auth.views import (
     Register,
     Login,
+    UserList
 )
 from user_menu.views import UserMenu
 
@@ -32,6 +33,6 @@ urlpatterns = [
     path('api/register', Register.as_view()),
     path('api/login', Login.as_view()),
 
-    #path('api/menus', api.menus, name='menus'),
     path('api/menus', UserMenu.as_view()),
+    path('api/users', UserList.as_view()),
 ]

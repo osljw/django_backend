@@ -46,3 +46,47 @@ class Login(APIView):
             'user_id': user.pk,
             'user_name':user.username,
         })
+
+class UserList(APIView):
+    def get(self, request, *args, **kwargs):
+        print("UserList request:", request, request.query_params.dict())
+        params = request.query_params.dict()
+
+        print("UserList:", User.objects.all())
+
+        pagesize = int(params['pagesize'])
+        if pagesize == 0:
+            pagesize = 2
+
+        pagenum = int(params['pagenum']) - 1
+
+        # if User.objects.all():
+        #     resp = {
+        #         'status':False,
+        #         'data':'用户名已被注册'
+        #     }
+        # else:
+        user_list = {
+            'status': True,
+            'data': {
+                'user_list': [],
+                'meta': {
+                    'total': 0,
+                    'pagenum': pagenum,
+                    'pagesize': pagesize,
+                    'pagesizes': [1, 2, 4, 8]
+                }
+            }
+        }
+
+        data = User.objects.all()
+        for id, user in enumerate(data[pagenum*pagesize:(pagenum+1)*pagesize]):
+            user_list['data']['user_list'].append({
+                'id': id,
+                'name': user.username
+            })
+
+        user_list['data']['meta']['total'] = len(data)
+
+        print("user_list return:", user_list)
+        return Response(user_list)
