@@ -26,7 +26,7 @@ from user_menu.views import UserMenu
 
 urlpatterns = [
     #path('login', api.login, name='login'),
-    
+
     path('user', user_info),
     path('admin/', admin.site.urls),
 
@@ -35,4 +35,11 @@ urlpatterns = [
 
     path('api/menus', UserMenu.as_view()),
     path('api/users', UserList.as_view()),
+]
+
+from user_chat.views import ChatConsumer
+
+websocket_urlpatterns = [
+    # 前端请求websocket连接
+    path('ws/chat', ChatConsumer.as_asgi()),
 ]

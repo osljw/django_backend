@@ -38,12 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'channels',
     
     'rest_framework',
     'rest_framework.authtoken',
 
     'user_auth',
     'user_menu',
+    'user_chat',
 ]
 
 MIDDLEWARE = [
@@ -79,6 +81,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'django_backend.wsgi.application'
 
+# 指定ASGI的路由地址
+ASGI_APPLICATION = 'django_backend.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
