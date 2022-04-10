@@ -14,7 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path, include
+import xadmin
+from xadmin.plugins import xversion
+from django.views.static import serve
+from . import settings
+
 from . import api
 from .apis.user_info import user_info
 from user_auth.views import (
@@ -24,17 +29,24 @@ from user_auth.views import (
 )
 from user_menu.views import UserMenu
 
+xversion.register_models()
+xadmin.autodiscover()
+
 urlpatterns = [
-    #path('login', api.login, name='login'),
+    #path('admin/', admin.site.urls),
+    path('xadmin', xadmin.site.urls),
+    re_path(r'media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 
     path('user', user_info),
-    path('admin/', admin.site.urls),
+    
 
     path('api/register', Register.as_view()),
     path('api/login', Login.as_view()),
 
     path('api/menus', UserMenu.as_view()),
     path('api/users', UserList.as_view()),
+
+    path('', include('home.urls')),
 ]
 
 from user_chat.views import ChatConsumer

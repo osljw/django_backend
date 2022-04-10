@@ -9,6 +9,11 @@ python manage.py runserver
 python manage.py startapp user_chat
 ```
 
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+
 
 # 用户管理
 
