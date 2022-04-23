@@ -15,13 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path, include
+from django.views.static import serve
 import xadmin
 from xadmin.plugins import xversion
-from django.views.static import serve
-from . import settings
 
+from . import settings
 from . import api
-from .apis.user_info import user_info
 from user_auth.views import (
     Register,
     Login,
@@ -37,16 +36,14 @@ urlpatterns = [
     path('xadmin', xadmin.site.urls),
     re_path(r'media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 
-    path('user', user_info),
-    
-
     path('api/register', Register.as_view()),
     path('api/login', Login.as_view()),
 
     path('api/menus', UserMenu.as_view()),
     path('api/users', UserList.as_view()),
 
-    path('', include('home.urls')),
+    path('api/', include('home.urls')),
+    path('api/', include('article.urls')),
 ]
 
 from user_chat.views import ChatConsumer

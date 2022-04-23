@@ -24,3 +24,8 @@ python manage.py migrate
 ```
 pip install channels
 ```
+
+# 数据
+
+扫描mkdocs目录， 生成Article数据库
+Article数据库

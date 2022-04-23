@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'user_auth',
     'user_menu',
     'user_chat',
+
+    'article',
 ]
 
 MIDDLEWARE = [
@@ -84,6 +86,14 @@ TEMPLATES = [
         },
     },
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'utils.renderers.CustomRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ]
+}
+
 
 WSGI_APPLICATION = 'django_backend.wsgi.application'
 
@@ -147,3 +157,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+AUTH_USER_MODEL = 'user_auth.User'
