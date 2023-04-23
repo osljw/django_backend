@@ -1,14 +1,12 @@
 import xadmin
-from xadmin import views
-from .models import Article, ArticleCategory
+
+from .models import Article
 
 
 class ArticleAdmin:
-    list_display = ["auth", "category", "title", "body", "is_show"]
-
+    list_display = ["id", "auth", "tags", "title", "body", "is_show"]
 xadmin.site.register(Article, ArticleAdmin)
 
-class ArticleCategoryAdmin:
-    list_display = ["title"]
-
-xadmin.site.register(ArticleCategory, ArticleCategoryAdmin)
+# class ArticleCategoryAdmin:
+#     list_display = ["title"]
+# xadmin.site.register(ArticleCategory, ArticleCategoryAdmin)

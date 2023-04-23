@@ -2,6 +2,8 @@
 # 运行
 ```
 python manage.py runserver
+
+python manage.py runserver 0.0.0.0:8000
 ```
 
 # 新建app
@@ -29,3 +31,11 @@ pip install channels
 
 扫描mkdocs目录， 生成Article数据库
 Article数据库
+
+
+# markdown
+
+数学公式
+```
+pip install python-markdown-math
+```

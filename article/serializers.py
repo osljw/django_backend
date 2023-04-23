@@ -7,8 +7,16 @@ class ArticleSerializer(ModelSerializer):
         model = Article
         fields = [
             "id",
+            "auth",
+            # "tags",
             "title",
             "body",
             "create_time",
             "update_time",
         ]
+
+# class ArticleCategorySerializer(ModelSerializer):
+    
+#     class Meta:
+#         model = ArticleCategory
+#         fields = "__all__"

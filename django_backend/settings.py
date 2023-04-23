@@ -53,7 +53,17 @@ INSTALLED_APPS = [
     'user_menu',
     'user_chat',
 
+    # 博客文章
     'article',
+    'taggit',
+    'comment',
+
+    'music_room',
+    'museum',
+    'upload',
+
+    'question',
+    'leaderboard',
 ]
 
 MIDDLEWARE = [
@@ -68,7 +78,9 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
+ALLOWED_HOSTS = ['192.168.0.101']
 
+# APPEND_SLASH=False
 ROOT_URLCONF = 'django_backend.urls'
 
 TEMPLATES = [
@@ -89,16 +101,35 @@ TEMPLATES = [
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
-        'utils.renderers.CustomRenderer',
+        # 'utils.renderers.CustomRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
-    ]
+        'rest_framework.renderers.JSONRenderer'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        # 'rest_framework.permissions.IsAuthenticated',
+    )
 }
 
+import datetime
+JWT_AUTH={
+    # 'JWT_RESPONSE_PAYLOAD_HANDLER':'app02.utils.my_jwt_response_payload_handler',
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7), # 过期时间，手动配置
+}
 
 WSGI_APPLICATION = 'django_backend.wsgi.application'
 
 # 指定ASGI的路由地址
 ASGI_APPLICATION = 'django_backend.asgi.application'
+CHANNEL_LAYERS = {    #频道后端，这里采用内存存储，默认是redis
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases

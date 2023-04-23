@@ -4,7 +4,7 @@ from django.db.models import CharField, ImageField
 
 
 class User(AbstractUser):
-    phone = CharField(max_length=15, unique=True, verbose_name="电话号码")
+    phone = CharField(max_length=15, verbose_name="电话号码")
     avatar = ImageField(upload_to='user/avatar', blank=True, verbose_name="头像")
 
 
