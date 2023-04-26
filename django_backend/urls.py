@@ -16,8 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path, include
 from django.views.static import serve
-import xadmin
-from xadmin.plugins import xversion
+# import xadmin
+# from xadmin.plugins import xversion
 
 from . import settings
 from . import api
@@ -25,12 +25,12 @@ from user_menu.views import UserMenu
 
 from upload.views import UploadView
 
-xversion.register_models()
-xadmin.autodiscover()
+# xversion.register_models()
+# xadmin.autodiscover()
 
 urlpatterns = [
-    #path('admin/', admin.site.urls),
-    path('xadmin', xadmin.site.urls),
+    path('admin/', admin.site.urls),
+    # path('xadmin', xadmin.site.urls),
     re_path(r'media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 
     # 登录认证

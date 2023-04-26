@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
 
-    'xadmin',
+    # 'xadmin',
     'crispy_forms',
     'reversion',
 
@@ -78,7 +78,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
-ALLOWED_HOSTS = ['192.168.0.101']
+ALLOWED_HOSTS = ['192.168.0.101', '127.0.0.1']
 
 # APPEND_SLASH=False
 ROOT_URLCONF = 'django_backend.urls'

@@ -1,1 +1,4 @@
 xadmin
+django-cors-headers
+channels
+djangorestframework
