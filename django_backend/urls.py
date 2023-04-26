@@ -32,6 +32,8 @@ urlpatterns = [
     path('grappelli/', include('grappelli.urls')), # grappelli URLS
     path('admin/', admin.site.urls),
     # path('xadmin', xadmin.site.urls),
+    path('markdownx/', include('markdownx.urls')), # grappelli URLS
+
     re_path(r'media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 
     # 登录认证

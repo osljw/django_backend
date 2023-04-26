@@ -45,8 +45,12 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
 
     # 'xadmin',
-    'crispy_forms',
-    'reversion',
+    # 'crispy_forms',
+    # 'reversion',
+
+    'django_json_widget',
+    'markdownx',
+
 
     'home',
 
@@ -64,6 +68,8 @@ INSTALLED_APPS = [
     'upload',
 
     'question',
+
+
     'leaderboard',
 ]
 
@@ -190,3 +196,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 AUTH_USER_MODEL = 'user_auth.User'
+
+
+MARKDOWNX_MARKDOWN_EXTENSIONS = [
+    'markdown.extensions.extra',
+    'markdown.extensions.codehilite',  # 代码高亮拓展
+]

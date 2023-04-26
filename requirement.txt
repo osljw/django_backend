@@ -2,3 +2,9 @@ xadmin
 django-cors-headers
 channels
 djangorestframework
+
+django-taggit
+
+django-grappelli
+django_json_widget
+django-markdownx
