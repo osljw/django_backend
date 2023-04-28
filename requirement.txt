@@ -1,10 +1,14 @@
-xadmin
 django-cors-headers
 channels
+django==3.2.8
 djangorestframework
+djangorestframework-jwt==1.11.0
 
 django-taggit
 
 django-grappelli
 django_json_widget
 django-markdownx
+
+markdown
+redis

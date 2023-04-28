@@ -9,18 +9,17 @@ from .models import Question
 
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ["id", "type", "question", "options", "url", "answer", "tip"]
-    # list_filter = ('created_time',)
-    # search_fields = ('title', 'body')
-    # ordering = ('-created_time',)
-    # formfield_overrides = {
-    #     models.TextField: {'widget': JSONEditorWidget},
-    # }
 
     def formfield_for_dbfield(self, db_field, **kwargs):
+        print("db_field:", db_field, kwargs.get('instance'))
         if db_field.name == 'options':
             kwargs['widget'] = JSONEditorWidget
         elif db_field.name == 'question':
             kwargs['widget'] = MarkdownxWidget
+        # elif db_field.name == 'answer':
+        #     # if kwargs.get('instance') and kwargs['instance'].type == 'multi_choice':
+        #     kwargs['widget'] = JSONEditorWidget
         return super().formfield_for_dbfield(db_field, **kwargs)
+    
 
 admin.site.register(Question, QuestionAdmin)
