@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
 
+    # 'reactapp',
+    # 'webpack_loader',
     # 'xadmin',
     # 'crispy_forms',
     # 'reversion',
@@ -85,7 +87,8 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
-ALLOWED_HOSTS = ['192.168.0.100', '192.168.0.101', '127.0.0.1']
+# ALLOWED_HOSTS = ['192.168.0.100', '192.168.0.101', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 # APPEND_SLASH=False
 ROOT_URLCONF = 'django_backend.urls'
@@ -93,7 +96,10 @@ ROOT_URLCONF = 'django_backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'build'), # index.html
+            # os.path.join(BASE_DIR, 'build', 'static')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -186,6 +192,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    # os.path.join(BASE_DIR, 'build'),
+    os.path.join(BASE_DIR, 'build', 'static'),
+]
+
+# 或者使用以下设置：
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
