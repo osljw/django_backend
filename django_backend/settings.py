@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'django_json_widget',
     'markdownx',
 
-
+    'notice',
     'home',
 
     'user_auth',
