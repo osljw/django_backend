@@ -12,3 +12,5 @@ django-markdownx
 
 markdown
 redis
+
+python-alipay-sdk

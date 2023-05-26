@@ -71,6 +71,8 @@ INSTALLED_APPS = [
 
 
     'leaderboard',
+
+    'travel',
 ]
 
 MIDDLEWARE = [

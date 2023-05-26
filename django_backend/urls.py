@@ -58,6 +58,9 @@ urlpatterns = [
 
     path('api/', include('question.urls')),
     path('api/', include('leaderboard.urls')),
+
+    path('api/travel', include('travel.urls')),
+    path('api/order', include('pay_ali.urls')),
 ]
 
 from user_chat.views import ChatConsumer, GameConsumer
