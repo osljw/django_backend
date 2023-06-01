@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path, include
 from django.views.static import serve
+from django.conf.urls.static import static
 # import xadmin
 # from xadmin.plugins import xversion
 
@@ -59,9 +60,12 @@ urlpatterns = [
     path('api/', include('question.urls')),
     path('api/', include('leaderboard.urls')),
 
-    path('api/travel', include('travel.urls')),
-    path('api/order', include('pay_ali.urls')),
-]
+    path('api/', include('travel.urls')),
+    path('api/', include('pay_ali.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# for url in urlpatterns:
+#     print(url)
 
 from user_chat.views import ChatConsumer, GameConsumer
 

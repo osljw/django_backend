@@ -4,7 +4,7 @@ from django.db import models
 from markdownx.widgets import MarkdownxWidget
 from django_json_widget.widgets import JSONEditorWidget
 
-from .models import Travel, City
+from .models import Travel, City, Person, Order
 # Register your models here.
 
 class TravelAdmin(admin.ModelAdmin):
@@ -29,3 +29,13 @@ class CityAdmin(admin.ModelAdmin):
     list_display = [field.name for field in City._meta.fields]
 
 admin.site.register(City, CityAdmin)
+
+class PersonAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in Person._meta.fields]
+
+admin.site.register(Person, PersonAdmin)
+
+class OrderAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in Order._meta.fields]
+
+admin.site.register(Order, OrderAdmin)
