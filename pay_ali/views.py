@@ -7,18 +7,21 @@ from alipay import AliPay
 
 import json
 
-with open("C:\\Users\\tests\\Documents\\alipay\\app_private_key.pem", 'r') as f:
-    app_private_key_string = f.read()
-    # app_private_key_string = 'MIIEpAIBAAKCAQEAoHjuV5EdBvlbYMfazc1m+zG9CcS+/Kzyq+nqsqSNuN9S+zfZeER3zxX6JWJrCbLHifITqHd6ktmbctBNXKGg5WnKB0XPFkki+0iMUuWFd6Vx5E9oFgVSX64YvMpO4bOPj3qbdTNtg81f2YLvZNwNBVJmz3RGkS7hwmdZxPpSFRFGQXQWj/VJqkxXZu8zHqMCpN9d2bfEo7SoNXyr+Sin+2Rb7GEitpQnsng0Hnz3NueXUsZ783ArYxIO0jo7CcRonC3YVV2kl4mqIPQpLJnvnqAycv1kSY9jjwD4so1GUtfdeiUvMeatTKDVPn37xa2HkwyjsgxY9CmwsRJFjcCicQIDAQABAoIBADqYLZ8303uKbX1HPHPNPn8WSEpa1sn4dJulTBdy0nTgxrIIUJYDmiO5iJ9B8oeWChoqlFb9WXppjsM7oCPkuJVMLYK+UMF4bxeGBAb42+U2OgH9pKn1w4BAV7QHwwnSwObJBB6laqWnxgnsL3GKkA6TagryEBpPHgwYJMUyCeq60RUzum/LX4IA83SUyGGjegj1alUld2C6BYV5k7oH5TP6vNjQiJwp0qbXZpr5gO08dlu0xIU5XzyOTo93uqSD5cdETGku0PLqKE5DkpcyXTBOg7iEAn9AI1OJWeXOwUCkNlWYOM2Vyrgego8+7LDq56owTkW0F5FlslyFap1clkkCgYEA4qT4m4yyFs1jCtNgymxJAYBYCZssdeVaY16t26a54Ele2aGCNc4q/zDoHuKNFP26/1a8MjDdyUfvdxtMgdRXYeElRrdHs6zfrUoKA9K+fGN41NJPVfioQH1OohbYAyReJhO31+C8o2DRLL9KEN594dhM24WTd7a+Hlld85QW8NsCgYEAtUHXYQsd5FjlDBLAW5ObgBQ1pdH7/kskmxG9ypIcSUpsir+iS8pd1McIwsVcVvjShaAMQQ1UZRStsh6LiYlQEyCvDXCxNWLKC/ux+RMywxKiJ9PneKOtGwcesT/kV9W7TigS8JkiE4ddzeC652rRKFa5caC7lAG75NIiFu+jBaMCgYEA1hrQfGmaZ24ZTUXIXxGSmid7g3+irbFABTWQ+jpzx8yoHOG1V0zvU2oJLfwJGTZk7Ags+yEss5QQRS11xgQplF6Tz00fID6Eg3i5I0l4B5wUrsAKkIW5tEpr+TWpVLaLdl8UQoycx56TnDkNKAh3VN34JTz3xZTN32+/EHbqgRcCgYEAsi0Z8oxCAyEbbyXTr3HHTz0Oi4WCiDQHtOPYxJOieK1PS4kbmhNA75QD2aq2ncwU7kQpJ51Z089i+5ApLLctXtAnJDgeCtOkt+jgx26G3NmpSyt0A9Qpq0Lxed3Lskgoyqh8DcUKiVXs8R+zux72oge2XataGSEnOcUSu6cvgq8CgYB6FYZ1vv/cVdnatP3hTPXFMvCINcgtEoU30CIehsf2tK/T/zBTrXBWw7dOPdaUgUZKhiPQzfMdkE7pZ4WZJ78fpr+Y88idF9d2okDjFFA4iCOjA8tNKYftgMc3PDbmRq7263VWyiGNz/NU0J/1DhLkW1MwlNx4aF4FLoq2E6+9gA=='
-    app_private_key_string = '-----BEGIN RSA PRIVATE KEY-----\n' + app_private_key_string + '\n-----END RSA PRIVATE KEY-----'
+app_private_key_string = ''
+alipay_public_key_string = ''
 
-with open("C:\\Users\\tests\\Documents\\alipay\\alipay_public_key.pem", 'r') as f:
-    alipay_public_key_string = f.read()
-    # alipay_public_key_string = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAquP601PpMj0i6xi7EZTkXJNoLe+qK/GozDsq/h1zyDjtW3/LOG1WCBnPL7x656/m9XzCIONKQ+BnG/HMQQNkcJbhzF/vm+TIXSp5U3sDdgg2y83s0jJJSTqLM89ABMrBklQJUVan3+Cj365GnXY0ZbkPplqsccqnAJorBZdXj8bJiLgEZzM9WOIvH571M5hmYkkmpXg9LA4oC9fjbJ9hgrZfge7bJ4XPFc3H5uJy4unriz38SDwK9iHxxWjOLST1NiNqBd12ydOtJ2n2KggmB+JhDfcej2jzgkOJZaamIbWpBch6w476UymhW7o4cYoAMnG1DIcg+zCimLYxLdh7gQIDAQAB'
-    alipay_public_key_string = '-----BEGIN PUBLIC KEY-----\n' + alipay_public_key_string + '\n-----END PUBLIC KEY-----'
+# with open("C:\\Users\\tests\\Documents\\alipay\\app_private_key.pem", 'r') as f:
+#     app_private_key_string = f.read()
+#     # app_private_key_string = 'MIIEpAIBAAKCAQEAoHjuV5EdBvlbYMfazc1m+zG9CcS+/Kzyq+nqsqSNuN9S+zfZeER3zxX6JWJrCbLHifITqHd6ktmbctBNXKGg5WnKB0XPFkki+0iMUuWFd6Vx5E9oFgVSX64YvMpO4bOPj3qbdTNtg81f2YLvZNwNBVJmz3RGkS7hwmdZxPpSFRFGQXQWj/VJqkxXZu8zHqMCpN9d2bfEo7SoNXyr+Sin+2Rb7GEitpQnsng0Hnz3NueXUsZ783ArYxIO0jo7CcRonC3YVV2kl4mqIPQpLJnvnqAycv1kSY9jjwD4so1GUtfdeiUvMeatTKDVPn37xa2HkwyjsgxY9CmwsRJFjcCicQIDAQABAoIBADqYLZ8303uKbX1HPHPNPn8WSEpa1sn4dJulTBdy0nTgxrIIUJYDmiO5iJ9B8oeWChoqlFb9WXppjsM7oCPkuJVMLYK+UMF4bxeGBAb42+U2OgH9pKn1w4BAV7QHwwnSwObJBB6laqWnxgnsL3GKkA6TagryEBpPHgwYJMUyCeq60RUzum/LX4IA83SUyGGjegj1alUld2C6BYV5k7oH5TP6vNjQiJwp0qbXZpr5gO08dlu0xIU5XzyOTo93uqSD5cdETGku0PLqKE5DkpcyXTBOg7iEAn9AI1OJWeXOwUCkNlWYOM2Vyrgego8+7LDq56owTkW0F5FlslyFap1clkkCgYEA4qT4m4yyFs1jCtNgymxJAYBYCZssdeVaY16t26a54Ele2aGCNc4q/zDoHuKNFP26/1a8MjDdyUfvdxtMgdRXYeElRrdHs6zfrUoKA9K+fGN41NJPVfioQH1OohbYAyReJhO31+C8o2DRLL9KEN594dhM24WTd7a+Hlld85QW8NsCgYEAtUHXYQsd5FjlDBLAW5ObgBQ1pdH7/kskmxG9ypIcSUpsir+iS8pd1McIwsVcVvjShaAMQQ1UZRStsh6LiYlQEyCvDXCxNWLKC/ux+RMywxKiJ9PneKOtGwcesT/kV9W7TigS8JkiE4ddzeC652rRKFa5caC7lAG75NIiFu+jBaMCgYEA1hrQfGmaZ24ZTUXIXxGSmid7g3+irbFABTWQ+jpzx8yoHOG1V0zvU2oJLfwJGTZk7Ags+yEss5QQRS11xgQplF6Tz00fID6Eg3i5I0l4B5wUrsAKkIW5tEpr+TWpVLaLdl8UQoycx56TnDkNKAh3VN34JTz3xZTN32+/EHbqgRcCgYEAsi0Z8oxCAyEbbyXTr3HHTz0Oi4WCiDQHtOPYxJOieK1PS4kbmhNA75QD2aq2ncwU7kQpJ51Z089i+5ApLLctXtAnJDgeCtOkt+jgx26G3NmpSyt0A9Qpq0Lxed3Lskgoyqh8DcUKiVXs8R+zux72oge2XataGSEnOcUSu6cvgq8CgYB6FYZ1vv/cVdnatP3hTPXFMvCINcgtEoU30CIehsf2tK/T/zBTrXBWw7dOPdaUgUZKhiPQzfMdkE7pZ4WZJ78fpr+Y88idF9d2okDjFFA4iCOjA8tNKYftgMc3PDbmRq7263VWyiGNz/NU0J/1DhLkW1MwlNx4aF4FLoq2E6+9gA=='
+#     app_private_key_string = '-----BEGIN RSA PRIVATE KEY-----\n' + app_private_key_string + '\n-----END RSA PRIVATE KEY-----'
 
-print("app_private_key_string:", app_private_key_string)
-print(alipay_public_key_string)
+# with open("C:\\Users\\tests\\Documents\\alipay\\alipay_public_key.pem", 'r') as f:
+#     alipay_public_key_string = f.read()
+#     # alipay_public_key_string = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAquP601PpMj0i6xi7EZTkXJNoLe+qK/GozDsq/h1zyDjtW3/LOG1WCBnPL7x656/m9XzCIONKQ+BnG/HMQQNkcJbhzF/vm+TIXSp5U3sDdgg2y83s0jJJSTqLM89ABMrBklQJUVan3+Cj365GnXY0ZbkPplqsccqnAJorBZdXj8bJiLgEZzM9WOIvH571M5hmYkkmpXg9LA4oC9fjbJ9hgrZfge7bJ4XPFc3H5uJy4unriz38SDwK9iHxxWjOLST1NiNqBd12ydOtJ2n2KggmB+JhDfcej2jzgkOJZaamIbWpBch6w476UymhW7o4cYoAMnG1DIcg+zCimLYxLdh7gQIDAQAB'
+#     alipay_public_key_string = '-----BEGIN PUBLIC KEY-----\n' + alipay_public_key_string + '\n-----END PUBLIC KEY-----'
+
+# print("app_private_key_string:", app_private_key_string)
+# print(alipay_public_key_string)
 
 
 def alipay_mobile(request):
