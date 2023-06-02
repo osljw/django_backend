@@ -9,6 +9,7 @@ django-taggit
 django-grappelli
 django_json_widget
 django-markdownx
+django-wangeditor
 
 markdown
 redis

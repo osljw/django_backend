@@ -1,9 +1,10 @@
 from django.db import models
 from user_auth.models import User
+from wangeditor.fields import WangRichTextField
 
 # Create your models here.
 class City(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
@@ -12,7 +13,7 @@ class Travel(models.Model):
     title = models.CharField(max_length=100)
     is_popular = models.BooleanField(default=False, verbose_name='是否热门')
     cover_image = models.ImageField(upload_to='destination_cover/')
-    description = models.TextField()
+    description = WangRichTextField()
     price = models.DecimalField(max_digits=8, decimal_places=2)
     cities = models.ManyToManyField('City', related_name='travel')
     duration_days = models.IntegerField() # 行程天数

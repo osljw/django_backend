@@ -1,13 +1,29 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
+from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Travel, Order
-from .serializers import TravelSerializer, OrderSerializer
+
 from django.utils.crypto import get_random_string
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated, AllowAny
+
+from .models import Travel, Order, City
+from .serializers import TravelSerializer, OrderSerializer
+
+class FilterView(APIView):
+    def get(self, request, *args, **kwargs):
+        # 获取参数：request.GET.get('param_name')
+
+        # 获取所有唯一的城市名称
+        unique_cities = City.objects.values_list('name', flat=True).distinct()  
+
+        return Response({'unique_cities': unique_cities})
 
 class TravelViewSet(viewsets.ViewSet):
+    
     queryset = Travel.objects.all()
     serializer_class = TravelSerializer
+    authentication_classes = [TokenAuthentication]
 
     def get_queryset(self):
         queryset = Travel.objects.all()
@@ -17,8 +33,10 @@ class TravelViewSet(viewsets.ViewSet):
             queryset = Travel.objects.filter(is_popular__exact=True)
 
         destination = self.request.query_params.get('destination', None)
+        print("destination", destination)
         if destination is not None:
-            queryset = queryset.filter(destination__icontains=destination)
+            destinations_list = destination.split(',')
+            queryset = Travel.objects.filter(cities__name__in=destinations_list)
 
         start_time_gt = self.request.query_params.get('start_time_gt', None)
         if start_time_gt is not None:
@@ -28,20 +46,36 @@ class TravelViewSet(viewsets.ViewSet):
         if start_time_lt is not None:
             queryset = queryset.filter(start_time__lte=start_time_lt)
 
-        price_min = self.request.query_params.get('price_min', None)
-        if price_min is not None:
+        price = self.request.query_params.get('price', None)
+        if price is not None:
+            price_min, price_max = price.split('-')
+            print("====price:", price_min, "max:", price_max)
+            price_min = float(price_min)
             queryset = queryset.filter(price__gte=price_min)
 
-        price_max = self.request.query_params.get('price_max', None)
-        if price_max is not None:
+            price_max = float(price_max)
             queryset = queryset.filter(price__lte=price_max)
-
 
         return queryset
 
+    def get_permissions(self):
+        """
+        根据当前请求返回所需的权限列表。
+        """
+        if self.action in ('create', 'update', 'destroy'):
+            permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = [AllowAny]
+        return [permission() for permission in permission_classes]
+
+
     def list(self, request):
         queryset = self.get_queryset()
-
+        try:
+            queryset = self.get_queryset()
+        except:
+            return Response({"error": "查询参数错误"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
         # descending = request.query_params.get('descending', 'true').lower() == 'true'
         # order_by = '-score' if descending else 'score'
         # queryset = queryset.order_by(order_by)
@@ -53,7 +87,7 @@ class TravelViewSet(viewsets.ViewSet):
         return Response(serializer.data)
     
     def create(self, request):
-        
+
         Travel_id = get_random_string(length=8)
         # Get the request data as a dictionary, handling both form data and JSON data
         if request.content_type == 'multipart/form-data':

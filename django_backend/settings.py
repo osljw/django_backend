@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'grappelli',
+    # 'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
 
     'django_json_widget',
     'markdownx',
+    'wangeditor',
 
 
     'home',
@@ -87,7 +88,8 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
-ALLOWED_HOSTS = ['192.168.0.100', '192.168.0.101', '127.0.0.1']
+# ALLOWED_HOSTS = ['192.168.0.100', '192.168.0.101', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 # APPEND_SLASH=False
 ROOT_URLCONF = 'django_backend.urls'
@@ -95,7 +97,9 @@ ROOT_URLCONF = 'django_backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'build'), # react index.html
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -189,6 +193,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# react static
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'build', 'static'),
+]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -204,3 +213,13 @@ MARKDOWNX_MARKDOWN_EXTENSIONS = [
     'markdown.extensions.extra',
     'markdown.extensions.codehilite',  # 代码高亮拓展
 ]
+
+
+WANGEDITOR_CONFIGS = {
+    'default': {  # 默认继承全局配置
+        'upload_url': '/wangeditor/upload/',
+        'upload_folder': '/uploads/',  # upload_to 参数相对 MEDIA_ROOT 的路径
+        'paste_image': True,  # 开启黏贴图片上传
+        'upload_max_size': 5 * 1024 * 1024,  # 设置上传文件大小上限，单位字节
+    },
+}

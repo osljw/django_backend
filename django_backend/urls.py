@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, re_path, include
 from django.views.static import serve
 from django.conf.urls.static import static
+from django.views.generic import TemplateView
 # import xadmin
 # from xadmin.plugins import xversion
 
@@ -30,8 +31,9 @@ from upload.views import UploadView
 # xadmin.autodiscover()
 
 urlpatterns = [
-    path('grappelli/', include('grappelli.urls')), # grappelli URLS
+    # path('grappelli/', include('grappelli.urls')), # grappelli URLS
     path('admin/', admin.site.urls),
+    path('wangeditor/', include('wangeditor.urls')),
     # path('xadmin', xadmin.site.urls),
     path('markdownx/', include('markdownx.urls')), # grappelli URLS
 
@@ -62,6 +64,9 @@ urlpatterns = [
 
     path('api/', include('travel.urls')),
     path('api/', include('pay_ali.urls')),
+
+    # Catch-all route to redirect to the frontend
+    re_path(r'^.*$', TemplateView.as_view(template_name='index.html')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # for url in urlpatterns:
