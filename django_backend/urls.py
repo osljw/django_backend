@@ -63,11 +63,16 @@ urlpatterns = [
     path('api/', include('leaderboard.urls')),
 
     path('api/', include('travel.urls')),
-    path('api/', include('pay_ali.urls')),
+    # path('api/', include('pay_ali.urls')),
 
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+print("=====static media:", static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))
+
+urlpatterns +=[
     # Catch-all route to redirect to the frontend
     re_path(r'^.*$', TemplateView.as_view(template_name='index.html')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
 
 # for url in urlpatterns:
 #     print(url)
