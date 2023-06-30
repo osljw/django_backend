@@ -29,12 +29,12 @@ from . import api
 
 urlpatterns = [
     # path('grappelli/', include('grappelli.urls')), # grappelli URLS
-    path('admin/', admin.site.urls),
+    path('adminv/', admin.site.urls),
     path('wangeditor/', include('wangeditor.urls')),
     # path('xadmin', xadmin.site.urls),
     path('markdownx/', include('markdownx.urls')), # grappelli URLS
 
-    re_path(r'media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    # re_path(r'media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 
     # 登录认证
     # path('api/login', obtain_jwt_token),
@@ -46,8 +46,6 @@ urlpatterns = [
 
     path('api/', include('home.urls')),
     path('api/', include('article.urls')),
-
-
 
     path('api/room/', include('music_room.urls')),
 
@@ -65,8 +63,6 @@ urlpatterns = [
     # path('api/', include('pay_ali.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-print("=====static media:", static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))
 
 urlpatterns +=[
     # Catch-all route to redirect to the frontend

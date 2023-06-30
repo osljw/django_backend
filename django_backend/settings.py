@@ -90,7 +90,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 # ALLOWED_HOSTS = ['192.168.0.100', '192.168.0.101', '127.0.0.1']
 ALLOWED_HOSTS = ['*']
 
-APPEND_SLASH=False
+# APPEND_SLASH=False
 ROOT_URLCONF = 'django_backend.urls'
 
 TEMPLATES = [
@@ -134,9 +134,9 @@ JWT_AUTH={
 }
 
 WSGI_APPLICATION = 'django_backend.wsgi.application'
-
 # 指定ASGI的路由地址
 ASGI_APPLICATION = 'django_backend.asgi.application'
+
 CHANNEL_LAYERS = {    #频道后端，这里采用内存存储，默认是redis
     "default": {
         "BACKEND": "channels.layers.InMemoryChannelLayer"
@@ -196,7 +196,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'public', 'static')
 
 # react static
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'build', 'static'),
+    # os.path.join(BASE_DIR, 'build', 'static'),
+    os.path.join(BASE_DIR, 'public'),
 ]
 
 
