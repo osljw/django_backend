@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path, include
 from django.views.static import serve
+from django.conf.urls.static import static
+from django.views.generic import TemplateView
 # import xadmin
 # from xadmin.plugins import xversion
 
@@ -26,8 +28,9 @@ from . import api
 # xadmin.autodiscover()
 
 urlpatterns = [
-    path('grappelli/', include('grappelli.urls')), # grappelli URLS
+    # path('grappelli/', include('grappelli.urls')), # grappelli URLS
     path('admin/', admin.site.urls),
+    path('wangeditor/', include('wangeditor.urls')),
     # path('xadmin', xadmin.site.urls),
     path('markdownx/', include('markdownx.urls')), # grappelli URLS
 
@@ -58,7 +61,20 @@ urlpatterns = [
 
     path('api/', include('notice.urls')),
     path('api/', include('chatgpt.urls')),
+    path('api/', include('travel.urls')),
+    # path('api/', include('pay_ali.urls')),
+
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+print("=====static media:", static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))
+
+urlpatterns +=[
+    # Catch-all route to redirect to the frontend
+    re_path(r'^.*$', TemplateView.as_view(template_name='index.html')),
 ]
+
+# for url in urlpatterns:
+#     print(url)
 
 from user_chat.views import ChatConsumer, GameConsumer
 
