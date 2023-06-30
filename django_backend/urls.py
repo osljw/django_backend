@@ -21,9 +21,6 @@ from django.views.static import serve
 
 from . import settings
 from . import api
-from user_menu.views import UserMenu
-
-from upload.views import UploadView
 
 # xversion.register_models()
 # xadmin.autodiscover()
@@ -58,6 +55,7 @@ urlpatterns = [
 
     path('api/', include('question.urls')),
     path('api/', include('leaderboard.urls')),
+    path('api/', include('chatgpt.urls')),
 ]
 
 from user_chat.views import ChatConsumer, GameConsumer
