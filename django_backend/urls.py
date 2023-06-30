@@ -56,7 +56,7 @@ urlpatterns = [
     path('api/', include('question.urls')),
     path('api/', include('leaderboard.urls')),
 
-    path('api/', include('notice.urls'))
+    path('api/', include('notice.urls')),
     path('api/', include('chatgpt.urls')),
 ]
 
