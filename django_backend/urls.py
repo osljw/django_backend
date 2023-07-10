@@ -21,6 +21,7 @@ from django.views.generic import TemplateView
 # import xadmin
 # from xadmin.plugins import xversion
 
+import re
 from . import settings
 from . import api
 
@@ -29,7 +30,7 @@ from . import api
 
 urlpatterns = [
     # path('grappelli/', include('grappelli.urls')), # grappelli URLS
-    path('adminv/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('wangeditor/', include('wangeditor.urls')),
     # path('xadmin', xadmin.site.urls),
     path('markdownx/', include('markdownx.urls')), # grappelli URLS
@@ -61,6 +62,9 @@ urlpatterns = [
     path('api/', include('chatgpt.urls')),
     path('api/', include('travel.urls')),
     # path('api/', include('pay_ali.urls')),
+
+    # 将静态文件路由排在前面
+    re_path(r'^%s(?P<path>.*)$' % re.escape(settings.STATIC_URL.lstrip('/')), serve, {'document_root': settings.STATIC_ROOT}),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
