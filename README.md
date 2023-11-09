@@ -1,4 +1,15 @@
 
+# 安装
+
+```
+pip install -r requirements.txt
+```
+
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+
 # 运行
 ```
 python manage.py runserver

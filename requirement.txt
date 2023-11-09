@@ -14,4 +14,3 @@ django-wangeditor
 markdown
 redis
 
-python-alipay-sdk

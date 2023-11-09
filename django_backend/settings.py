@@ -71,7 +71,6 @@ INSTALLED_APPS = [
     'question',
     'leaderboard',
 
-    'chatgpt',
     'travel',
 ]
 

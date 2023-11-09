@@ -35,15 +35,12 @@ urlpatterns = [
     # path('xadmin', xadmin.site.urls),
     path('markdownx/', include('markdownx.urls')), # grappelli URLS
 
-    # re_path(r'media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 
     # 登录认证
     # path('api/login', obtain_jwt_token),
     # path('api-token-refresh/', refresh_jwt_token),
     path('api/', include('user_auth.urls')),
 
-    # path('api/menus', UserMenu.as_view()),
-    # path('api/users', UserList.as_view()),
 
     path('api/', include('home.urls')),
     path('api/', include('article.urls')),
@@ -59,9 +56,6 @@ urlpatterns = [
     path('api/', include('leaderboard.urls')),
 
     path('api/', include('notice.urls')),
-    path('api/', include('chatgpt.urls')),
-    path('api/', include('travel.urls')),
-    # path('api/', include('pay_ali.urls')),
 
     # 将静态文件路由排在前面
     re_path(r'^%s(?P<path>.*)$' % re.escape(settings.STATIC_URL.lstrip('/')), serve, {'document_root': settings.STATIC_ROOT}),
