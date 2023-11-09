@@ -10,13 +10,17 @@ from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from rest_framework import status
 
 from .models import Article
-from .serializers import ArticleSerializer
+from .serializers import ArticleListSerializer, ArticleDetailSerializer
 
 
 class ArticleModelViewSet(ModelViewSet):
     queryset = Article.objects.filter(is_show=True)
-    serializer_class = ArticleSerializer
+    # serializer_class = ArticleListSerializer
 
+    def get_serializer_class(self):
+        if 'pk' in self.kwargs:  # URL中包含了文章ID，使用ArticleDetailSerializer
+            return ArticleDetailSerializer
+        return ArticleListSerializer
 
     def create(self, request):
         
