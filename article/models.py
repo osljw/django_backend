@@ -28,12 +28,18 @@ from user_auth.models import User
 #         return f"title:{self.title}, parent: {self.parent_title}, level: {self.level}, path: {self.path}"
 
 class Article(models.Model):
+    FORMAT_CHOICES = [
+        ('mdx', 'MDX'),
+        ('html', 'Html'),
+    ]
+
     # User:Article = 1:n
     auth = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     # ArticleCategory:Article = 1:n
     #category = models.ForeignKey(ArticleCategory, blank=True, on_delete=models.DO_NOTHING)
     tags = TaggableManager(blank=True)
 
+    type = models.CharField(max_length=10, choices=FORMAT_CHOICES, default="mdx")
     title = CharField(max_length=255, verbose_name="article title")
     body = TextField()
     
@@ -44,7 +50,7 @@ class Article(models.Model):
 
     class Meta:
         db_table = "article_detail"
-        unique_together = (("auth", "title"),)
+        # unique_together = (("auth", "title"),)
         verbose_name = "文章详情"
 
     def __str__(self) -> str:
