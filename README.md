@@ -29,6 +29,11 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
+# app
+
+article: 文章
+upload: 图片上传(tinymce upload)
+
 
 # 用户管理
 

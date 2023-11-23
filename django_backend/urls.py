@@ -49,7 +49,7 @@ urlpatterns = [
 
     path('api/museum/', include('museum.urls')),
 
-    path('api/upload/', include('upload.urls')),
+    path('api/', include('upload.urls')),
     # path('api/upload', UploadView.as_view())
 
     path('api/', include('question.urls')),
