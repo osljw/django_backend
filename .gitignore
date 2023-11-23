@@ -1,5 +1,5 @@
 *__pycache__*
-# media
+media/*
 db.sqlite3
 build/static
 public
