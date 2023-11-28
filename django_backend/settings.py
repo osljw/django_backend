@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'article',
     'taggit',
     'comment',
+    'page',
 
     'music_room',
     'museum',

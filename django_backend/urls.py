@@ -44,6 +44,7 @@ urlpatterns = [
 
     path('api/', include('home.urls')),
     path('api/', include('article.urls')),
+    path('api/', include('page.urls')),
 
     path('api/room/', include('music_room.urls')),
 
