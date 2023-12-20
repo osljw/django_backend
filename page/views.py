@@ -1,6 +1,10 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import filters
+from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework.authentication import SessionAuthentication
 
 # Create your views here.
 
@@ -9,24 +13,28 @@ from .serializers import PageListSerializer, PageDetailSerializer
 
 class PageModelViewSet(ModelViewSet):
     queryset = Page.objects.filter(valid=True)
-
+    #authentication_classes = [JSONWebTokenAuthentication, SessionAuthentication]
+    authentication_classes = [JSONWebTokenAuthentication]
+    permission_classes = [AllowAny]
+    
     filter_backends = [filters.OrderingFilter, filters.SearchFilter]
     #ordering_fields = [ 'field1', 'field2' ]  # 可以根据这里的字段进行排序
     search_fields = ['url']  # 可以根据这里的字段进行搜索
 
     def get_queryset(self):
-        # print("=====user:", self.request.user)
+        print("page =====user:", self.request.user, self.request.user.is_superuser)
         user = self.request.user
-        query = self.request.query_params.get('query')
+        valid = self.request.query_params.get('valid')
+        print("valid:", valid)
         
-        
-        return Page.objects.all()
-    
-        if user.is_superuser:
+        if valid is None:
+            return self.queryset
+
+        # admin backend
+        if user.is_superuser and valid is not None and valid.lower() == 'all':
             return Page.objects.all()
-        else:
-            return Page.objects.filter(valid=True)
         
+        return self.queryset
 
     def get_serializer_class(self):
         # if 'title' in self.kwargs:  # URL中包含了文章ID，使用ArticleDetailSerializer

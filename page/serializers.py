@@ -7,13 +7,13 @@ class PageListSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Page
-        fields = ['id', 'url', 'type', 'valid']
+        fields = ['id', 'title', 'url', 'type', 'valid']
 
 
 class PageDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Page
-        fields = ['id', 'url', 'type', 'body', 'valid']
+        fields = ['id', 'title', 'url', 'type', 'body', 'valid']
 
 

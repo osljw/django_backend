@@ -16,6 +16,7 @@ class Page(models.Model):
         ('html', 'Html'),
     ]
     
+    title = CharField(max_length=255, default='', verbose_name="page title")
     url = CharField(max_length=255, verbose_name="page url")
     type = models.CharField(max_length=10, choices=FORMAT_CHOICES, default="mdx")
     body = TextField()

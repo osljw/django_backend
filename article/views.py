@@ -8,6 +8,9 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import status, filters, pagination
 from rest_framework import serializers
+from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from .models import Article
 from .serializers import ArticleListSerializer, ArticleDetailSerializer
@@ -33,27 +36,27 @@ class ArticlePagination(pagination.PageNumberPagination):
 
 class ArticleModelViewSet(ModelViewSet):
     queryset = Article.objects.filter(is_show=True)
+    authentication_classes = [JSONWebTokenAuthentication]
+    permission_classes = [AllowAny]
     pagination_class = ArticlePagination    # 分页功能
     ordering_fields = ('id', 'create_time', 'update_time')  # 定义允许排序的字段
     filter_backends = [filters.SearchFilter]
     search_fields = ['title', 'content']
 
     def get_queryset(self):
-        print("=====user:", self.request.user)
+        print("=====user:", self.request.user, self.request.user.is_superuser)
         user = self.request.user
-        query = self.request.query_params.get('query')
         
+        all_param = self.request.query_params.get('all')
+        print("all_param:", all_param)
+        if all_param is None:
+            return self.queryset
 
-        return Article.objects.all()
-        queryset = Article.objects.filter(is_show=True)
-
-        if user.is_superuser:
-            queryset = Article.objects.all()
-
-        if query:
-            queryset = queryset.filter(Q(title__icontains=query) | Q(content__icontains=query))
+        # admin backend
+        if user.is_superuser and all_param is not None:
+            return Article.objects.all()
         
-        return queryset
+        return self.queryset
         
     def get_serializer_class(self):
         # if 'title' in self.kwargs:  # URL中包含了文章ID，使用ArticleDetailSerializer
