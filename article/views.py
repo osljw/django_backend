@@ -7,10 +7,13 @@ from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import status, filters, pagination
+
 from rest_framework import serializers
 from rest_framework.permissions import AllowAny
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
 
 from .models import Article
 from .serializers import ArticleListSerializer, ArticleDetailSerializer
@@ -23,6 +26,7 @@ class ArticlePagination(pagination.PageNumberPagination):
     page_query_param = 'page'  # 控制页码的查询参数名
     ordering_param = 'ordering'  # 控制排序的查询参数名
 
+    # @method_decorator(never_cache)
     def paginate_queryset(self, queryset, request, view=None):
         ordering = request.query_params.get(self.ordering_param)
         if ordering:
@@ -37,11 +41,20 @@ class ArticlePagination(pagination.PageNumberPagination):
 class ArticleModelViewSet(ModelViewSet):
     queryset = Article.objects.filter(is_show=True)
     authentication_classes = [JSONWebTokenAuthentication]
-    permission_classes = [AllowAny]
+    # permission_classes = [AllowAny]
     pagination_class = ArticlePagination    # 分页功能
     ordering_fields = ('id', 'create_time', 'update_time')  # 定义允许排序的字段
     filter_backends = [filters.SearchFilter]
-    search_fields = ['title', 'content']
+    search_fields = ['title', 'body']
+
+    def get_permissions(self):
+        if self.action in ['retrieve', 'list']:
+            permission_classes = [AllowAny]
+        else:
+            # permission_classes = self.permission_classes
+            permission_classes = [IsAuthenticated]
+        print("permission:", permission_classes)
+        return [permission() for permission in permission_classes]
 
     def get_queryset(self):
         print("=====user:", self.request.user, self.request.user.is_superuser)
@@ -49,14 +62,15 @@ class ArticleModelViewSet(ModelViewSet):
         
         all_param = self.request.query_params.get('all')
         print("all_param:", all_param)
-        if all_param is None:
-            return self.queryset
 
         # admin backend
-        if user.is_superuser and all_param is not None:
-            return Article.objects.all()
-        
-        return self.queryset
+        if user.is_superuser:
+            if all_param is not None or self.action in ["create", "update", "partial_update", "destroy"]:
+                return Article.objects.all()
+
+        queryset = Article.objects.filter(is_show=True)
+
+        return queryset
         
     def get_serializer_class(self):
         # if 'title' in self.kwargs:  # URL中包含了文章ID，使用ArticleDetailSerializer

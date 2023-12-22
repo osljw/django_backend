@@ -21,20 +21,29 @@ class PageModelViewSet(ModelViewSet):
     #ordering_fields = [ 'field1', 'field2' ]  # 可以根据这里的字段进行排序
     search_fields = ['url']  # 可以根据这里的字段进行搜索
 
+    def get_permissions(self):
+        if self.action in ['retrieve', 'list']:
+            permission_classes = [AllowAny]
+        else:
+            # permission_classes = self.permission_classes
+            permission_classes = [IsAuthenticated]
+        print("permission:", permission_classes)
+        return [permission() for permission in permission_classes]
+    
     def get_queryset(self):
         print("page =====user:", self.request.user, self.request.user.is_superuser)
         user = self.request.user
         valid = self.request.query_params.get('valid')
         print("valid:", valid)
         
-        if valid is None:
-            return self.queryset
-
         # admin backend
-        if user.is_superuser and valid is not None and valid.lower() == 'all':
-            return Page.objects.all()
+        if user.is_superuser:
+            if valid is not None or self.action in ["create", "update", "partial_update", "destroy"]:
+                return Page.objects.all()
         
-        return self.queryset
+        queryset = Page.objects.filter(valid=True)
+
+        return queryset
 
     def get_serializer_class(self):
         # if 'title' in self.kwargs:  # URL中包含了文章ID，使用ArticleDetailSerializer
