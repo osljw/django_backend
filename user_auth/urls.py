@@ -6,4 +6,6 @@ from .views import Register
 urlpatterns = [
     path('login', obtain_jwt_token),
     path('register', Register.as_view()),
+
+    path('token/refresh', refresh_jwt_token),
 ]

@@ -15,7 +15,7 @@ class PageModelViewSet(ModelViewSet):
     queryset = Page.objects.filter(valid=True)
     #authentication_classes = [JSONWebTokenAuthentication, SessionAuthentication]
     authentication_classes = [JSONWebTokenAuthentication]
-    permission_classes = [AllowAny]
+    # permission_classes = [AllowAny]
     
     filter_backends = [filters.OrderingFilter, filters.SearchFilter]
     #ordering_fields = [ 'field1', 'field2' ]  # 可以根据这里的字段进行排序
@@ -27,7 +27,7 @@ class PageModelViewSet(ModelViewSet):
         else:
             # permission_classes = self.permission_classes
             permission_classes = [IsAuthenticated]
-        print("permission:", permission_classes)
+        print("page view permission:", permission_classes)
         return [permission() for permission in permission_classes]
     
     def get_queryset(self):

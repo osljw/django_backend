@@ -53,11 +53,11 @@ class ArticleModelViewSet(ModelViewSet):
         else:
             # permission_classes = self.permission_classes
             permission_classes = [IsAuthenticated]
-        print("permission:", permission_classes)
+        print("article view permission:", permission_classes)
         return [permission() for permission in permission_classes]
 
     def get_queryset(self):
-        print("=====user:", self.request.user, self.request.user.is_superuser)
+        print("article =====user:", self.request.user, self.request.user.is_superuser)
         user = self.request.user
         
         all_param = self.request.query_params.get('all')

@@ -26,6 +26,6 @@ class UploadView(APIView):
         data = {
             "name": filename,
             "status": "done",
-            "location": "http://localhost:8000/" + save_path,
+            "location": save_path,
         }
         return JsonResponse(data=data, status=status.HTTP_200_OK)
