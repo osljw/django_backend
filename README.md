@@ -16,7 +16,9 @@ python manage.py runserver
 
 python manage.py runserver 0.0.0.0:8000
 
-uvicorn django_backend.asgi:application --reload --host 192.168.0.106
+uvicorn django_backend.asgi:application --host 192.168.0.106 --reload 
+
+uvicorn django_backend.asgi:application --host 192.168.0.103 --workers 4
 ```
 
 # 新建app
