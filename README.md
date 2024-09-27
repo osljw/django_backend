@@ -6,6 +6,8 @@ python manage.py runserver
 python manage.py runserver 0.0.0.0:8000
 
 uvicorn django_backend.asgi:application --reload
+
+uvicorn django_backend.asgi:application --port 8001 --reload
 ```
 
 # 新建app

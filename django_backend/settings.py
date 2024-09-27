@@ -73,6 +73,8 @@ INSTALLED_APPS = [
 
     'chatgpt',
     'travel',
+
+    'book_management',
 ]
 
 MIDDLEWARE = [
