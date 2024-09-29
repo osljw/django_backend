@@ -38,8 +38,6 @@ urlpatterns = [
     # re_path(r'media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 
     # 登录认证
-    # path('api/login', obtain_jwt_token),
-    # path('api-token-refresh/', refresh_jwt_token),
     path('api/', include('user_auth.urls')),
 
     # path('api/menus', UserMenu.as_view()),

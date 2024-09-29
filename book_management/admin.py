@@ -6,4 +6,4 @@ from .models import Book
 
 class BookAdmin(admin.ModelAdmin):
     list_display = [field.name for field in Book._meta.fields]
-admin.site.register(Article, ArticleAdmin)
+admin.site.register(Book, BookAdmin)
