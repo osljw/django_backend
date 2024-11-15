@@ -20,7 +20,7 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-
+ 
 # 用户管理
 
 `pip install djangorestframework`
