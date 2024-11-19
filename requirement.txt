@@ -3,6 +3,7 @@ channels
 django==3.2.8
 djangorestframework
 djangorestframework-jwt==1.11.0
+djangorestframework_simplejwt
 
 django-taggit
 
