@@ -12,22 +12,18 @@ from user_auth.models import User
 from django.http import Http404
 import datetime
 
-class BookListCreateView(generics.ListCreateAPIView):
-    queryset = Book.objects.all()
+
+class BookListAPIView(generics.ListAPIView):
     serializer_class = BookSerializer
-
-class BookRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-
-class BorrowCreateView(generics.CreateAPIView):
-    queryset = Borrow.objects.all()
-    serializer_class = BorrowSerializer
-
-class BorrowReturnView(generics.UpdateAPIView):
-    queryset = Borrow.objects.all()
-    serializer_class = BorrowSerializer
-
+    # authentication_classes = [JWTAuthentication]
+    # permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        queryset = Book.objects.all()
+        title = self.request.query_params.get('title', None)
+        if title:
+            queryset = queryset.filter(title__icontains=title)
+        return queryset
 
 
 
@@ -36,7 +32,7 @@ class LendMultipleBooksView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        book_ids_data = request.data.get('book_ids')
+        book_ids_data = request.data.get('bookIds')
         # 从JWT中获取用户信息，进而获取用户ID
         user = request.user
         user_id = user.id
@@ -57,13 +53,11 @@ class LendMultipleBooksView(APIView):
             borrowed_books = []
             for book_id in book_ids:
                 try:
-                    book = Book.objects.get(isbn=book_id)
-                    # if book.available:
-                    #     book.available = False
-                    #     book.save()
-                    #     borrowed_books.append(Borrow(user=user, book=book, borrow_date=datetime.datetime.now()))
-                    # else:
-                    #     return Response({"message": f"Book with id {book_id} is not available"}, status=status.HTTP_400_BAD_REQUEST)
+                    book = Book.objects.get(id=book_id)
+                    if book.borrowed_count >= book.total_count:
+                        return Response({'message': '该书籍已无库存，无法借阅'}, status=status.HTTP_400_BAD_REQUEST)
+                    book.borrowed_count += 1
+                    book.save()
                     borrowed_books.append(Borrow(user=user, book=book, borrow_date=datetime.datetime.now()))
                 except Book.DoesNotExist:
                     return Response({"message": f"Book with id {book_id} not found"}, status=status.HTTP_404_NOT_FOUND)

@@ -20,26 +20,47 @@ def import_books_from_excel(file_path):
         df = pd.read_excel(file_path)
         for index, row in df.iterrows():
             try:
-                # book = Book(
-                #     title=row['title'],
-                #     author=row['author'],
-                #     isbn=row['isbn'],
-                #     volume=row['volume'],
-                #     publication_date=row['publication_date'],
-                #     publisher=row['publisher'],
-                #     quantity=row['quantity'],
-                #     # 如果Excel中有对应status字段，可以类似下面这样处理，这里先注释掉原有的choices示例
-                #     # status=row['status']
-                # )
-                # book.save()
-                print(row)
+                quantity_value = row['数量']
+                if pd.isnull(quantity_value):  # 判断是否为NaN（空值）
+                    total_count_value = 1
+                else:
+                    total_count_value = int(quantity_value)
+
+                if row['年份'] == '赠书':
+                    book = Book(
+                        title=row['图书名称'],
+                        # author=row['author'],
+                        # isbn=row['isbn'],
+                        # volume=row['volume'],
+                        # publication_date=row['publication_date'],
+                        # publisher=row['publisher'],
+                        total_count=total_count_value,
+                        gift_status=True,
+                        # 如果Excel中有对应status字段，可以类似下面这样处理，这里先注释掉原有的choices示例
+                        # status=row['status']
+                    )
+                else:
+                    book = Book(
+                        title=row['图书名称'],
+                        # author=row['author'],
+                        # isbn=row['isbn'],
+                        # volume=row['volume'],
+                        # publication_date=row['publication_date'],
+                        # publisher=row['publisher'],
+                        total_count=total_count_value,
+                        purchase_year=int(row['年份'])
+                        # 如果Excel中有对应status字段，可以类似下面这样处理，这里先注释掉原有的choices示例
+                        # status=row['status']
+                    )
+                book.save()
+                # print(index, row)
             except IntegrityError as e:
-                print(f"插入数据时出现完整性错误，可能是重复数据等原因，错误信息：{e}")
+                print(f"{index} 插入数据时出现完整性错误，可能是重复数据等原因，错误信息：{e}")
                 continue
             except KeyError as e:
                 print(f"Excel文件中缺少列 {e}，请检查列名是否匹配。")
                 continue
-            break
+            # break
     except FileNotFoundError:
         print(f"文件 {file_path} 未找到，请检查文件路径是否正确。")
 
