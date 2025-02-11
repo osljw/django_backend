@@ -9,9 +9,13 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from rest_framework import status
 
-from .models import Article
-from .serializers import ArticleSerializer
+from .models import Article, ArticleCategory
+from .serializers import ArticleSerializer, ArticleCategoryListSerializer
 
+
+class ArticleCategoryViewSet(ModelViewSet):
+    queryset = ArticleCategory.objects.all()
+    serializer_class = ArticleCategoryListSerializer
 
 class ArticleModelViewSet(ModelViewSet):
     queryset = Article.objects.filter(is_show=True)
