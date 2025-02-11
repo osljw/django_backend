@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
+<<<<<<< HEAD
 from rest_framework.fields import CurrentUserDefault
 from taggit.serializers import TagListSerializerField
 
@@ -10,6 +11,17 @@ from user_auth.models import User
 class ArticleListSerializer(ModelSerializer):
     auth = serializers.SerializerMethodField()
     tags = serializers.SerializerMethodField()
+=======
+from .models import Article, ArticleCategory
+
+class ArticleCategorySerializer(ModelSerializer):
+    class Meta:
+        model = ArticleCategory
+        fields = '__all__'
+
+class ArticleSerializer(ModelSerializer):
+    categories = ArticleCategorySerializer(many=True, read_only=True)
+>>>>>>> book
 
     class Meta:
         model = Article
@@ -17,6 +29,7 @@ class ArticleListSerializer(ModelSerializer):
         fields = ['id', 'auth', 'tags', 'title', 'type', 'create_time', 'update_time', 'is_show']
         read_only_fields = ['create_time', 'update_time']
 
+<<<<<<< HEAD
     def get_auth(self, obj):
         return obj.auth.username
     
@@ -90,3 +103,16 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = ArticleCategory
 #         fields = "__all__"
+=======
+
+class ArticleCategoryListSerializer(ModelSerializer):
+    articles = ArticleSerializer(many=True, read_only=True)
+    # article_titles = serializers.SerializerMethodField()
+    # def get_article_titles(self, obj):
+    #     return [article.title for article in obj.articles.all()]
+
+    class Meta:
+        model = ArticleCategory
+        fields = '__all__'
+        # read_only_fields = ['create_time', 'update_time']
+>>>>>>> book

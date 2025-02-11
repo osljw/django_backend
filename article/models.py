@@ -27,6 +27,15 @@ from user_auth.models import User
 #     def __str__(self) -> str:
 #         return f"title:{self.title}, parent: {self.parent_title}, level: {self.level}, path: {self.path}"
 
+class ArticleCategory(models.Model):
+    name = models.CharField(max_length=255, verbose_name="栏目名称")
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name="栏目创建时间")
+    class Meta:
+        db_table = "article_category"
+        verbose_name = "文章栏目"
+    def __str__(self):
+        return self.name
+    
 class Article(models.Model):
     FORMAT_CHOICES = [
         ('mdx', 'MDX'),
@@ -35,8 +44,9 @@ class Article(models.Model):
 
     # User:Article = 1:n
     auth = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    # ArticleCategory:Article = 1:n
-    #category = models.ForeignKey(ArticleCategory, blank=True, on_delete=models.DO_NOTHING)
+    # ArticleCategory:Article = m:n
+    categories = models.ManyToManyField(ArticleCategory, blank=True, related_name='articles')
+    
     tags = TaggableManager(blank=True)
 
     type = models.CharField(max_length=10, choices=FORMAT_CHOICES, default="mdx")

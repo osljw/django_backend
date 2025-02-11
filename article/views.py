@@ -15,8 +15,13 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 
+<<<<<<< HEAD
 from .models import Article
 from .serializers import ArticleListSerializer, ArticleDetailSerializer
+=======
+from .models import Article, ArticleCategory
+from .serializers import ArticleSerializer, ArticleCategoryListSerializer
+>>>>>>> book
 
 class ArticlePagination(pagination.PageNumberPagination):
     page_size = 10  # 每页显示的记录数量
@@ -37,6 +42,10 @@ class ArticlePagination(pagination.PageNumberPagination):
             return None
         return super().paginate_queryset(queryset, request, view)
     
+
+class ArticleCategoryViewSet(ModelViewSet):
+    queryset = ArticleCategory.objects.all()
+    serializer_class = ArticleCategoryListSerializer
 
 class ArticleModelViewSet(ModelViewSet):
     queryset = Article.objects.filter(is_show=True)

@@ -9,6 +9,7 @@ from rest_framework.response import Response
 
 from rest_framework.generics import CreateAPIView
 from rest_framework_jwt.serializers import jwt_payload_handler, jwt_encode_handler
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import User
 from .serializers import UserSerializer
@@ -55,14 +56,17 @@ class Register(CreateAPIView):
             }
         else:
             user = User.objects.create_user(username=username,password=password)
-            # token, created = Token.objects.get_or_create(user=user)
-            payload = jwt_payload_handler(user)
-            token = jwt_encode_handler(payload)
+            # # token, created = Token.objects.get_or_create(user=user)
+            # payload = jwt_payload_handler(user)
+            # token = jwt_encode_handler(payload)
+            refresh = RefreshToken.for_user(user)
+            access_token = str(refresh.access_token)
+
             resp = {
                 'status_code': 0,
                 'user_id': user.pk,
                 'user_name': user.username,
-                'token': token,
+                'access_token': access_token,
             }
 
         return Response(resp)

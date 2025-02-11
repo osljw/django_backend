@@ -73,6 +73,8 @@ INSTALLED_APPS = [
     'leaderboard',
 
     'travel',
+
+    'book_management',
 ]
 
 MIDDLEWARE = [
@@ -120,18 +122,39 @@ REST_FRAMEWORK = {
     # 'DEFAULT_AUTHENTICATION_CLASSES': (
     #     # 'rest_framework.authentication.SessionAuthentication',
     #     # 'rest_framework.authentication.BasicAuthentication',
-    #     'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    #     # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    #     'rest_framework_simplejwt.authentication.JWTAuthentication',
     # ),
     # 'DEFAULT_PERMISSION_CLASSES': (
-    #     # 'rest_framework.permissions.IsAuthenticated',
+    #     'rest_framework.permissions.IsAuthenticated',
     # )
 }
 
 import datetime
-JWT_AUTH={
-    # 'JWT_RESPONSE_PAYLOAD_HANDLER':'app02.utils.my_jwt_response_payload_handler',
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7), # 过期时间，手动配置
-}
+# JWT_AUTH={
+#     # 'JWT_RESPONSE_PAYLOAD_HANDLER':'app02.utils.my_jwt_response_payload_handler',
+#     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7), # 过期时间，手动配置
+# }
+
+# SIMPLEJWT = {
+#     'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=7),  # 设置访问令牌有效期，可以根据需求调整
+#     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),  # 设置刷新令牌有效期
+#     'ROTATE_REFRESH_TOKENS': False,
+#     'BLACKLIST_AFTER_ROTATION': True,
+#     'UPDATE_LAST_LOGIN': False,
+
+#     # 'ALGORITHM': 'HS256', 
+#     # 'SIGNATURE_KEY': SECURITY_KEY,  
+#     # 'VERIFYING_KEY': None,
+#     # 'AUDIENCE': None,
+#     # 'ISSUER': None,
+
+#     'JWK_URL': None,
+#     'LEEWAY': 0,
+
+#     'AUTH_HEADER_TYPES': ('JWT',),  # 确认请求头中携带JWT的格式，默认是Bearer
+# }
+
 
 WSGI_APPLICATION = 'django_backend.wsgi.application'
 # 指定ASGI的路由地址

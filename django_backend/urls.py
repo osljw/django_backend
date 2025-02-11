@@ -37,8 +37,6 @@ urlpatterns = [
 
 
     # 登录认证
-    # path('api/login', obtain_jwt_token),
-    # path('api-token-refresh/', refresh_jwt_token),
     path('api/', include('user_auth.urls')),
 
 
@@ -57,16 +55,21 @@ urlpatterns = [
     path('api/', include('leaderboard.urls')),
 
     path('api/', include('notice.urls')),
+    # path('api/', include('chatgpt.urls')),
+    path('api/', include('travel.urls')),
+    # path('api/', include('pay_ali.urls')),
+
+    path('api/', include('book_management.urls')),
 
     # 将静态文件路由排在前面
     re_path(r'^%s(?P<path>.*)$' % re.escape(settings.STATIC_URL.lstrip('/')), serve, {'document_root': settings.STATIC_ROOT}),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-urlpatterns +=[
-    # Catch-all route to redirect to the frontend
-    re_path(r'^.*$', TemplateView.as_view(template_name='index.html')),
-]
+# urlpatterns +=[
+#     # Catch-all route to redirect to the frontend
+#     re_path(r'^.*$', TemplateView.as_view(template_name='index.html')),
+# ]
 
 # for url in urlpatterns:
 #     print(url)
