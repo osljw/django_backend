@@ -16,15 +16,12 @@ python manage.py runserver
 
 python manage.py runserver 0.0.0.0:8000
 
-<<<<<<< HEAD
 uvicorn django_backend.asgi:application --host 192.168.0.106 --reload 
 
 uvicorn django_backend.asgi:application --host 192.168.0.103 --workers 4
-=======
 uvicorn django_backend.asgi:application --reload
 
 uvicorn django_backend.asgi:application --port 8001 --reload
->>>>>>> book
 ```
 
 # 新建app
@@ -37,16 +34,12 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-<<<<<<< HEAD
 # app
 
 article: 文章
 upload: 图片上传(tinymce upload)
 
 
-=======
- 
->>>>>>> book
 # 用户管理
 
 `pip install djangorestframework`

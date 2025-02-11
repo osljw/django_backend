@@ -1,18 +1,7 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
-<<<<<<< HEAD
-from rest_framework.fields import CurrentUserDefault
-from taggit.serializers import TagListSerializerField
-
-from .models import Article
-from user_auth.models import User
-
-
-class ArticleListSerializer(ModelSerializer):
-    auth = serializers.SerializerMethodField()
-    tags = serializers.SerializerMethodField()
-=======
 from .models import Article, ArticleCategory
+from user_auth.models import User
 
 class ArticleCategorySerializer(ModelSerializer):
     class Meta:
@@ -21,20 +10,18 @@ class ArticleCategorySerializer(ModelSerializer):
 
 class ArticleSerializer(ModelSerializer):
     categories = ArticleCategorySerializer(many=True, read_only=True)
->>>>>>> book
 
     class Meta:
         model = Article
         # fields = '__all__'
-        fields = ['id', 'auth', 'tags', 'title', 'type', 'create_time', 'update_time', 'is_show']
+        fields = ['id', 'auth', 'title', 'type', 'create_time', 'update_time', 'is_show']
         read_only_fields = ['create_time', 'update_time']
 
-<<<<<<< HEAD
     def get_auth(self, obj):
         return obj.auth.username
     
-    def get_tags(self, obj):
-        return list(obj.tags.names())
+    # def get_tags(self, obj):
+    #     return list(obj.tags.names())
 
     def create(self, validated_data):
         print("=====ArticleListSerializer create:", validated_data)
@@ -49,12 +36,12 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
 
     # tags = serializers.ListField(child=serializers.CharField(), required=False)
     # auth = serializers.IntegerField(required=False)
-    tags = TagListSerializerField()
+    # tags = TagListSerializerField()
 
     class Meta:
         model = Article
         # fields = '__all__'
-        fields = ['id', 'title', 'body', 'type', 'tags', 'auth', 'is_show']
+        fields = ['id', 'title', 'body', 'type', 'auth', 'is_show']
 
 
     def validate(self, data):
@@ -76,7 +63,7 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         print("initial_data:", self.initial_data)
         print("validated_data:", validated_data)
-        tags_data = validated_data.pop('tags', [])  # Get the tags data
+        # tags_data = validated_data.pop('tags', [])  # Get the tags data
         auth_data = self.initial_data.get('auth', None)  # Get the auth data
 
         # Check if auth_data is provided
@@ -93,8 +80,8 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
         article = Article.objects.create(auth=user, **validated_data)
 
         # Update the tags for the article
-        if tags_data:
-            article.tags.set(tags_data)
+        # if tags_data:
+        #     article.tags.set(tags_data)
 
         return article
 
@@ -103,7 +90,6 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = ArticleCategory
 #         fields = "__all__"
-=======
 
 class ArticleCategoryListSerializer(ModelSerializer):
     articles = ArticleSerializer(many=True, read_only=True)
@@ -115,4 +101,3 @@ class ArticleCategoryListSerializer(ModelSerializer):
         model = ArticleCategory
         fields = '__all__'
         # read_only_fields = ['create_time', 'update_time']
->>>>>>> book
