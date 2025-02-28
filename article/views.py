@@ -32,9 +32,11 @@ class ArticlePagination(pagination.PageNumberPagination):
         if ordering:
             queryset = queryset.order_by(ordering)
 
-        page = request.query_params.get(self.page_query_param)
-        if page is None:
-            return None
+        # 没有page参数时，不分页
+        # page = request.query_params.get(self.page_query_param)
+        # if page is None:
+        #     return None
+
         return super().paginate_queryset(queryset, request, view)
     
 
@@ -126,35 +128,6 @@ class ArticleModelViewSet(ModelViewSet):
     #     serializer.save()
     #     return Response(serializer.data, status=status.HTTP_201_CREATED)
     
-# class ArticleListView(ListAPIView):
-#     queryset = Article.objects.filter(is_show=True)
-#     serializer_class = ArticleSerializer
 
 
-# class ArticleDetailView(APIView):
 
-#     def get(self, request, pk):
-#         article = Article.objects.get(pk=pk)
-
-#         md = markdown.Markdown(
-#             extensions=[
-#                 'markdown.extensions.extra',
-#                 'markdown.extensions.codehilite',
-#                 'mdx_math',
-#                 # 'markdown.extensions.toc',
-#                 TocExtension(slugify=slugify),
-#             ],
-#             extension_configs = { 
-#                     'mdx_math': {'enable_dollar_delimiter': True} 
-#             }
-#         )
-#         md.convert(article.body)
-#         # article.body = md.convert(article.body)
-        
-#         serializer = ArticleSerializer(article)
-#         d = serializer.data
-#         d['toc'] = md.toc
-#         print(d)
-#         # 返回 Json 数据
-#         # return Response(serializer.data)
-#         return Response(d)
