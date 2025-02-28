@@ -4,6 +4,6 @@ from .views import ArticleModelViewSet, ArticleCategoryViewSet
 
 
 router = SimpleRouter(trailing_slash=False)
+router.register('article/category', ArticleCategoryViewSet)
 router.register('article', ArticleModelViewSet)
-router.register('category', ArticleCategoryViewSet)
 urlpatterns = router.urls

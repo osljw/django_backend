@@ -6,7 +6,8 @@ from user_auth.models import User
 class ArticleCategorySerializer(ModelSerializer):
     class Meta:
         model = ArticleCategory
-        fields = '__all__'
+        # fields = '__all__'
+        fields = ['id', 'name']
 
 class ArticleSerializer(ModelSerializer):
     categories = ArticleCategorySerializer(many=True, read_only=True)
@@ -14,7 +15,7 @@ class ArticleSerializer(ModelSerializer):
     class Meta:
         model = Article
         # fields = '__all__'
-        fields = ['id', 'auth', 'title', 'type', 'create_time', 'update_time', 'is_show']
+        fields = ['id', 'auth', 'categories', 'title', 'type', 'create_time', 'update_time', 'is_show']
         read_only_fields = ['create_time', 'update_time']
 
     def get_auth(self, obj):
@@ -85,11 +86,6 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
 
         return article
 
-# class ArticleCategorySerializer(ModelSerializer):
-    
-#     class Meta:
-#         model = ArticleCategory
-#         fields = "__all__"
 
 class ArticleCategoryListSerializer(ModelSerializer):
     articles = ArticleSerializer(many=True, read_only=True)
