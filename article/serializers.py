@@ -3,12 +3,47 @@ from rest_framework.serializers import ModelSerializer
 from .models import Article, ArticleCategory
 from user_auth.models import User
 
+
+class ArticleCategoryListSerializer(ModelSerializer):
+    # articles = ArticleSerializer(many=True, read_only=True)
+    total = serializers.IntegerField(
+        source='articles_count',  # 对应注解字段
+        read_only=True,
+        help_text='该分类下的文章数量'
+    )
+
+    class Meta:
+        model = ArticleCategory
+        fields = '__all__'
+        # read_only_fields = ['create_time', 'update_time']
+
+class ArticleCategoryDetailSerializer(serializers.ModelSerializer):
+    articles = serializers.SerializerMethodField()
+    # total = serializers.IntegerField(
+    #     source='articles_count',
+    #     read_only=True,
+    #     help_text='分类下的文章数量'
+    # )
+
+    class Meta:
+        model = ArticleCategory
+        fields = ['id', 'name', 'create_time', 'articles']
+
+    def get_articles(self, obj):
+        return ArticleSerializer(
+            obj.articles.all().order_by('-create_time'),
+            many=True,
+            context=self.context
+        ).data
+
 class ArticleCategorySerializer(ModelSerializer):
     class Meta:
         model = ArticleCategory
         # fields = '__all__'
         fields = ['id', 'name']
+        read_only_fields = ['id']  # 确保ID只读
 
+# 获取文章列表
 class ArticleSerializer(ModelSerializer):
     categories = ArticleCategorySerializer(many=True, read_only=True)
 
@@ -30,19 +65,30 @@ class ArticleSerializer(ModelSerializer):
         obj.auth = User()
         obj.save()
         return obj
-    
+
+# 获取文章，创建文章
 class ArticleDetailSerializer(serializers.ModelSerializer):
     auth = serializers.SerializerMethodField()
-    # tags = serializers.SerializerMethodField()
+    # 写入字段（处理ID数组）
+    categories = serializers.PrimaryKeyRelatedField(
+        queryset=ArticleCategory.objects.all(),
+        many=True,
+        write_only=True  # 只在写入时生效
+    )
+    
+    # 读取字段（自动生成详细信息）
+    categories_info = ArticleCategorySerializer(
+        source='categories',
+        many=True,
+        read_only=True
+    )
 
-    # tags = serializers.ListField(child=serializers.CharField(), required=False)
-    # auth = serializers.IntegerField(required=False)
-    # tags = TagListSerializerField()
 
     class Meta:
         model = Article
-        # fields = '__all__'
-        fields = ['id', 'title', 'body', 'type', 'auth', 'is_show']
+        fields = '__all__'
+        # fields = ['id', 'title', 'categories', 'body', 'type', 'auth', 'is_show']
+        read_only_fields = ('auth',)
 
 
     def validate(self, data):
@@ -57,9 +103,19 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
     def get_auth(self, obj):
         return obj.auth.username
     
-    # def get_tags(self, obj):
-    #     return list(obj.tags.names())
-    
+    def to_representation(self, instance):
+        """ 重写输出格式 """
+        data = super().to_representation(instance)
+        # 将 categories_info 重命名为 categories
+        data['categories'] = data.pop('categories_info')
+        return data
+
+    def update(self, instance, validated_data):
+        """处理分类关系更新"""
+        categories = validated_data.pop('categories', None)
+        if categories is not None:
+            instance.categories.set(categories)
+        return super().update(instance, validated_data)
 
     def create(self, validated_data):
         print("initial_data:", self.initial_data)
@@ -80,20 +136,7 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
 
         article = Article.objects.create(auth=user, **validated_data)
 
-        # Update the tags for the article
-        # if tags_data:
-        #     article.tags.set(tags_data)
-
         return article
 
 
-class ArticleCategoryListSerializer(ModelSerializer):
-    articles = ArticleSerializer(many=True, read_only=True)
-    # article_titles = serializers.SerializerMethodField()
-    # def get_article_titles(self, obj):
-    #     return [article.title for article in obj.articles.all()]
 
-    class Meta:
-        model = ArticleCategory
-        fields = '__all__'
-        # read_only_fields = ['create_time', 'update_time']

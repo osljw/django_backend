@@ -91,6 +91,14 @@ MIDDLEWARE = [
 CORS_ORIGIN_ALLOW_ALL = True
 # ALLOWED_HOSTS = ['192.168.0.100', '192.168.0.101', '127.0.0.1']
 ALLOWED_HOSTS = ['*']
+# 防止跨域请求 (CORS) 导致头信息丢失，允许携带 Authorization 头
+CORS_ALLOW_HEADERS = (
+    "accept",
+    "authorization",  # 必须小写
+    "content-type",
+)
+CORS_ALLOW_CREDENTIALS = True
+
 
 # APPEND_SLASH=False
 ROOT_URLCONF = 'django_backend.urls'
@@ -154,6 +162,22 @@ import datetime
 
 #     'AUTH_HEADER_TYPES': ('JWT',),  # 确认请求头中携带JWT的格式，默认是Bearer
 # }
+
+SIMPLE_JWT = {
+    # 访问令牌过期时间（默认5分钟）
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=1),
+    
+    # 刷新令牌过期时间（默认1天）
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=7),
+    
+    # 是否允许刷新令牌（默认False）
+    'ROTATE_REFRESH_TOKENS': True,
+    
+    # 刷新后旧令牌的过期时间（默认None表示立即失效）
+    'BLACKLIST_AFTER_ROTATION': True,
+    
+    # 其他可选配置...
+}
 
 
 WSGI_APPLICATION = 'django_backend.wsgi.application'

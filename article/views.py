@@ -1,5 +1,7 @@
 
-from markdown.extensions.toc import TocExtension
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
+from django.db.models import Count
 
 
 from rest_framework.authtoken.views import APIView
@@ -11,12 +13,15 @@ from rest_framework import status, filters, pagination
 from rest_framework import serializers
 from rest_framework.permissions import AllowAny
 from rest_framework.permissions import IsAuthenticated
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import never_cache
+# from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.decorators import action
+
+
 
 from .models import Article, ArticleCategory
-from .serializers import ArticleSerializer, ArticleDetailSerializer, ArticleCategoryListSerializer
+from .serializers import ArticleSerializer, ArticleDetailSerializer
+from .serializers import ArticleCategoryListSerializer, ArticleCategoryDetailSerializer
 
 class ArticlePagination(pagination.PageNumberPagination):
     page_size = 10  # 每页显示的记录数量
@@ -41,12 +46,29 @@ class ArticlePagination(pagination.PageNumberPagination):
     
 
 class ArticleCategoryViewSet(ModelViewSet):
-    queryset = ArticleCategory.objects.all()
+    # queryset = ArticleCategory.objects.all()
+    queryset = ArticleCategory.objects.annotate(articles_count=Count('articles'))
     serializer_class = ArticleCategoryListSerializer
+    # pagination_class = ArticlePagination    # 分页功能
+
+    # def get_serializer_class(self):
+    #     if self.action == 'list':
+    #         return ArticleCategoryListSerializer
+    #     return ArticleCategoryDetailSerializer
+    
+    # /category/{id}/articles
+    @action(detail=True, methods=['get'])
+    def articles(self, request, pk=None):
+        category = self.get_object()
+        articles = category.articles.all().order_by('-create_time')
+        paginator = ArticlePagination()
+        page = paginator.paginate_queryset(articles, request, view=self)
+        serializer = ArticleSerializer(page, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
 class ArticleModelViewSet(ModelViewSet):
     queryset = Article.objects.filter(is_show=True)
-    authentication_classes = [JSONWebTokenAuthentication]
+    authentication_classes = [JWTAuthentication]
     # permission_classes = [AllowAny]
     pagination_class = ArticlePagination    # 分页功能
     ordering_fields = ('id', 'create_time', 'update_time')  # 定义允许排序的字段
@@ -59,6 +81,9 @@ class ArticleModelViewSet(ModelViewSet):
         else:
             # permission_classes = self.permission_classes
             permission_classes = [IsAuthenticated]
+        print("全部请求头:", self.request.META)  # 检查所有元数据
+        print(f"Auth User: {self.request.user}")  # 查看认证用户
+        print(f"Auth Header: {self.request.META.get('HTTP_AUTHORIZATION')}")  # 查看请求头
         print("article view permission:", permission_classes)
         return [permission() for permission in permission_classes]
 
@@ -100,6 +125,14 @@ class ArticleModelViewSet(ModelViewSet):
             return ordering
         return None
 
+    def perform_update(self, serializer):
+        serializer.save(auth=self.request.user)
+
+    # def create(self, request, *args, **kwargs):
+    #     print("全部请求头:", request.META)  # 检查所有元数据
+    #     print("认证头:", request.META.get('HTTP_AUTHORIZATION'))
+    #     return super().create(request, *args, **kwargs)
+                          
     # def partial_update(self, request, *args, **kwargs):
     #     instance = self.get_object()
     #     serializer = self.get_serializer(instance, data=request.data, partial=True)
@@ -108,25 +141,6 @@ class ArticleModelViewSet(ModelViewSet):
     #     print("===pathch data:", serializer.data)
     #     return Response(serializer.data)
     
-    # def create(self, request):
-        
-    #     # leaderboard_id = get_random_string(length=8)
-    #     # # Get the request data as a dictionary, handling both form data and JSON data
-    #     # if request.content_type == 'multipart/form-data':
-    #     #     print("post multipart/form-data:", request.POST.dict())
-    #     #     data = {'id': leaderboard_id, **request.POST.dict()}
-    #     # else:
-    #     #     print("post:", request.data)
-    #     #     data = {'id': leaderboard_id, **request.data}
-    #     data = request.data
-    #     print("post create:", request.data)
-    #     print("serializer_class:", self.get_serializer)
-
-    #     serializer = self.get_serializer(data=data, context={'request': request})
-    #     # serializer.is_valid(raise_exception=True)
-    #     serializer.is_valid(raise_exception=False)
-    #     serializer.save()
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
     
 
 
