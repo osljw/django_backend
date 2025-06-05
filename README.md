@@ -40,6 +40,9 @@ article: 文章
 upload: 图片上传(tinymce upload)
 
 
+collection: 藏品管理
+book
+
 # 用户管理
 
 `pip install djangorestframework`

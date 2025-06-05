@@ -67,6 +67,7 @@ INSTALLED_APPS = [
 
     'music_room',
     'museum',
+    'collection', # 藏品系统
     'upload',
 
     'question',

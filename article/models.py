@@ -40,6 +40,7 @@ class Article(models.Model):
     FORMAT_CHOICES = [
         ('mdx', 'MDX'),
         ('html', 'Html'),
+        ('external', 'Ext'),
     ]
 
     # User:Article = 1:n
@@ -67,3 +68,11 @@ class Article(models.Model):
         return self.title
 
 
+class ArticleImage(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='article_images/')
+    # alt_text = models.CharField(max_length=255, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Image for {self.article.name}"
