@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from django.http import JsonResponse
 from django.http import HttpResponse
 from django.views import View
+from django.conf import settings
 
 import os
 import hashlib
@@ -23,14 +24,18 @@ class UploadView(APIView):
         md5 = hashlib.md5(file_data).hexdigest()
 
         # filename = request.FILES['file'].name
+        # 使用文件的md5作为文件名称
         filename = f"{md5}.{uploaded_file.name.split('.')[-1]}"
-        save_path = os.path.join('media/uploads', filename)
+        save_path = os.path.join(settings.MEDIA_ROOT, 'uploads', filename)
+        file_url = f"{settings.MEDIA_URL}uploads/{filename}"
         handle_uploaded_file(request.FILES['file'], save_path)
+
+        print("file_url:", file_url)
 
         data = {
             "name": filename,
             "status": "done",
-            "location": save_path,
+            "location": file_url,
         }
         return JsonResponse(data=data, status=status.HTTP_200_OK)
     

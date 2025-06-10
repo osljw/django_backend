@@ -55,9 +55,6 @@ class ArticleSerializer(ModelSerializer):
 
     def get_auth(self, obj):
         return obj.auth.username
-    
-    # def get_tags(self, obj):
-    #     return list(obj.tags.names())
 
     def create(self, validated_data):
         print("=====ArticleListSerializer create:", validated_data)
@@ -134,7 +131,9 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
             # Create a new user with a default username if auth_data is not provided
             user = User.objects.get_or_create(username='default_username')
 
+        categories = validated_data.pop('categories', [])
         article = Article.objects.create(auth=user, **validated_data)
+        article.categories.set(categories)
 
         return article
 
